@@ -11,7 +11,7 @@ public class Terminal implements Runnable {
         }
     }
 
-    public synchronized void reserve(int n) throws InterruptedException {
+    public void reserve(int n) throws InterruptedException {
         seats.get(n).book();
         System.out.println("Seat "+n+" booked!!");
     }
@@ -19,15 +19,17 @@ public class Terminal implements Runnable {
     public synchronized void choose() throws InterruptedException {
         int[] temp = freeSeats();
         boolean seatNotFound = true;
-        for (int i = 0; seatNotFound||i<5; i++) {
+        System.out.println("Choosing seat...");
+        for (int i = 0; seatNotFound&&i<5; i++) {
             if (temp[i] == 1) {
-                reserve(i);
                 System.out.println("Seat " + i + " chosen!!");
-                return;
+                reserve(i);
+                seatNotFound=false;
             }
             else
                 ;
         }
+        System.out.println();
     }
 
     public int[] freeSeats() {
@@ -40,9 +42,9 @@ public class Terminal implements Runnable {
         }
         for (int i = 0; i < seats.size(); i++) {
             if (freeSeats[i] == 1)
-                System.out.println("Seat number" + i + ": Not Booked. ");
+                System.out.println("Seat " + i + ":Not Booked. ");
             else
-                System.out.println("Seat number " + i + " Booked. ");
+                System.out.println("Seat " + i + ":Booked. ");
         }
         System.out.println();
         return freeSeats;
